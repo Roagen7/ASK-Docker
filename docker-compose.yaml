@@ -1,0 +1,28 @@
+version: '3'
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    volumes:
+      - ./init/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./init/definitions.json:/etc/rabbitmq/definitions.json
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+  service:
+    container_name: kujawalau-service
+    build:
+      context: ./service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+  web:
+    container_name: kujawalau-web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports: 
+      - "8080:8080"
